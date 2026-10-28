@@ -1,0 +1,137 @@
+code:
+
+import random
+import math
+
+
+def initial_board():
+    return [random.randint(0, 7) for _ in range(8)]
+
+
+
+def COST(board):
+    conflicts = 0
+
+    for i in range(8):
+        for j in range(i + 1, 8):
+            if (board[i] == board[j] or
+                abs(board[i] - board[j]) == abs(i - j)):
+                conflicts += 1
+
+    return conflicts
+
+
+
+def get_neighbor(board):
+    neighbor = board.copy()
+
+    col = random.randint(0, 7)
+    new_row = random.randint(0, 7)
+
+    while new_row == neighbor[col]:
+        new_row = random.randint(0, 7)
+
+    neighbor[col] = new_row
+    return neighbor
+
+
+
+def print_board(board):
+    for row in range(8):
+        for col in range(8):
+            if board[col] == row:
+                print("Q", end=" ")
+            else:
+                print(".", end=" ")
+        print()
+
+
+
+def simulated_annealing():
+    current = initial_board()
+    current_cost = COST(current)
+
+    temperature = 100.0
+    minimum_temperature = 0.001
+    cooling_rate = 0.95
+    max_iterations = 5000
+
+    print("Initial Board:")
+    print_board(current)
+    print("Initial Cost:", current_cost)
+
+    for iteration in range(max_iterations):
+
+        
+        if current_cost == 0 or temperature <= minimum_temperature:
+            break
+
+        
+        neighbor = get_neighbor(current)
+        next_cost = COST(neighbor)
+
+        delta = next_cost - current_cost
+
+        
+        if delta < 0:
+            current = neighbor
+            current_cost = next_cost
+
+        
+        else:
+            r = random.random()
+
+            if r < math.exp(-delta / temperature):
+                current = neighbor
+                current_cost = next_cost
+
+        
+        temperature *= cooling_rate
+
+        
+        if iteration % 100 == 0:
+            print("Iteration:", iteration,
+                  "Cost:", current_cost)
+
+    
+    print("\nFinal Board:")
+    print_board(current)
+    print("Final Cost:", current_cost)
+
+    if current_cost == 0:
+        print("Solution found!")
+    else:
+        print("Solution not found. Try running again.")
+
+
+
+simulated_annealing()
+
+
+OUTPUT:
+Initial Board:
+. . . . . . . . 
+Q Q . . . . . . 
+. . . . Q . . . 
+. . . . . . . . 
+. . . . . . . . 
+. . Q . . . Q . 
+. . . Q . Q . . 
+. . . . . . . Q 
+Initial Cost: 7
+Iteration: 0 Cost: 8
+Iteration: 100 Cost: 6
+Iteration: 200 Cost: 1
+
+Final Board:
+. Q . . . . . . 
+. . . . . . . Q 
+. . . . Q . . . 
+. . . . . . Q . 
+. . . . . . . . 
+Q . Q . . . . . 
+. . . . . Q . . 
+. . . Q . . . . 
+Final Cost: 1
+Solution not found. Try running again.
+
