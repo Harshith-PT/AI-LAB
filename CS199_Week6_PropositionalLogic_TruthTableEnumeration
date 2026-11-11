@@ -59,6 +59,32 @@ else:
     print("\nKB does not entail the Query")
 
 
+OUTPUT:
+
+
+Enter number of propositions: 3
+Enter proposition: P
+Enter proposition: Q
+Enter proposition: R
+Enter number of KB sentences: 3
+Enter KB sentence: (not Q) or P
+Enter KB sentence: (not P) or (not Q)
+Enter KB sentence: Q or R
+Enter query: R
+
+Truth Table
+{'P' : True, 'Q': True, 'R': True} KB: False Query: True
+('P' : True, 'Q': True, 'R': False} KB: False Query: False
+{'P' : True, 'Q': False, 'R': True) KB: True Query: True
+{'P' : True, 'Q': False, 'R': False) KB: False Query: False
+{'P' : False, 'Q': True, 'R': True} KB: False Query: True
+{'P' : False, 'Q': True, 'R': False} KB: False Query: False
+('P' : False, 'Q': False, 'R': True} KB: True Query: True
+{'P' : False, 'Q': False, 'R': False} KB: False Query: False
+
+KB entails the Query
+
+
 
 
 
